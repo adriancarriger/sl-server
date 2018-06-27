@@ -1,6 +1,6 @@
-# sl-base
+# sl-server
 
-A docker-compose base repo for running serverless microservices locally
+A GraphQL server layer based on [graphql-yoga](https://github.com/prismagraphql/graphql-yoga)
 
 ## Microservices
 
