@@ -1,35 +1,41 @@
 const {
   GraphQLServer
-} = require('graphql-yoga')
+} = require('graphql-yoga');
 const {
   Prisma
-} = require('prisma-binding')
+} = require('prisma-binding');
 
 const resolvers = {
   Query: {
     feed(parent, args, ctx, info) {
       return ctx.db.query.posts({
-        where: {
-          isPublished: true
-        }
-      }, info)
+          where: {
+            isPublished: true
+          }
+        },
+        info
+      );
     },
     drafts(parent, args, ctx, info) {
       return ctx.db.query.posts({
-        where: {
-          isPublished: false
-        }
-      }, info)
+          where: {
+            isPublished: false
+          }
+        },
+        info
+      );
     },
     post(parent, {
       id
     }, ctx, info) {
       return ctx.db.query.post({
-        where: {
-          id
-        }
-      }, info)
-    },
+          where: {
+            id
+          }
+        },
+        info
+      );
+    }
   },
   Mutation: {
     createDraft(parent, {
@@ -39,20 +45,22 @@ const resolvers = {
       return ctx.db.mutation.createPost({
           data: {
             title,
-            text,
-          },
+            text
+          }
         },
-        info,
-      )
+        info
+      );
     },
     deletePost(parent, {
       id
     }, ctx, info) {
       return ctx.db.mutation.deletePost({
-        where: {
-          id
-        }
-      }, info)
+          where: {
+            id
+          }
+        },
+        info
+      );
     },
     publish(parent, {
       id
@@ -63,13 +71,13 @@ const resolvers = {
           },
           data: {
             isPublished: true
-          },
+          }
         },
-        info,
-      )
-    },
-  },
-}
+        info
+      );
+    }
+  }
+};
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -80,13 +88,15 @@ const server = new GraphQLServer({
       typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
       endpoint: 'http://prisma:4466', // the endpoint of the Prisma API
       debug: true, // log all GraphQL queries & mutations sent to the Prisma API
-      // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
-    }),
-  }),
-})
+      secret: process.env.PRISMA_SECRET || 'dev-secret-123'
+    })
+  })
+});
 
-const port = 4332
+const port = 4332;
 
 server.start({
-  port
-}, () => console.log(`Server is running on http://localhost:${port}`))
+    port
+  },
+  () => console.log(`Server is running on http://localhost:${port}`)
+);
