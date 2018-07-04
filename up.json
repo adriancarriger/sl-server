@@ -1,0 +1,9 @@
+{
+  "name": "sl-server",
+  "regions": [
+    "us-west-2"
+  ],
+  "proxy": {
+    "command": "npm run dev"
+  }
+}

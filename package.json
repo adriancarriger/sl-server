@@ -1,5 +1,5 @@
 {
-  "name": "graphql-boilerplate",
+  "name": "sl-server",
   "scripts": {
     "start": "nodemon --config config/nodemon.json",
     "dev": "node src/index.js",
@@ -7,11 +7,11 @@
     "prisma": "prisma"
   },
   "dependencies": {
+    "dotenv": "^6.0.0",
     "graphql-yoga": "1.14.10",
     "prisma-binding": "1.5.19"
   },
   "devDependencies": {
-    "graphql-cli": "2.16.3",
     "nodemon": "^1.17.5",
     "prisma": "1.7.1"
   }

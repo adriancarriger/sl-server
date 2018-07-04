@@ -1,9 +1,17 @@
+const dotenv = require('dotenv');
 const {
   GraphQLServer
 } = require('graphql-yoga');
 const {
   Prisma
 } = require('prisma-binding');
+
+// Load .env
+dotenv.config();
+
+const {
+  PORT = 4332, PRISMA_DATA_ENDPOINT, PRISMA_SECRET
+} = process.env;
 
 const resolvers = {
   Query: {
@@ -82,21 +90,19 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
   resolvers,
-  context: req => ({
-    ...req,
+  context: request => ({
+    ...request,
     db: new Prisma({
       typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
-      endpoint: 'http://prisma:4466', // the endpoint of the Prisma API
+      endpoint: PRISMA_DATA_ENDPOINT, // the endpoint of the Prisma API
       debug: true, // log all GraphQL queries & mutations sent to the Prisma API
-      secret: process.env.PRISMA_SECRET || 'dev-secret-123'
+      secret: PRISMA_SECRET
     })
   })
 });
 
-const port = 4332;
-
 server.start({
-    port
+    port: PORT
   },
-  () => console.log(`Server is running on http://localhost:${port}`)
+  () => console.log(`Server is running on http://localhost:${PORT}`)
 );
