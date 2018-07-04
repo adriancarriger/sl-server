@@ -34,3 +34,13 @@ jobs:
       - run:
            name: Start Docker
            command: docker-compose -f ./sl-base/docker-compose.yml up -d
+      - deploy:
+          name: Deploy
+          command: |
+            docker-compose -f ./sl-base/docker-compose.yml exec \
+            -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+            -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+            -e CIRCLE_BRANCH=$CIRCLE_BRANCH \
+            -e PRISMA_SECRET_PRODUCTION=$PRISMA_SECRET_PRODUCTION \
+            -e PRISMA_SECRET_STAGING=$PRISMA_SECRET_STAGING \
+             server /bin/sh -c ".circleci/deploy.sh"
