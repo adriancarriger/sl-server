@@ -1,5 +1,6 @@
 {
   "name": "sl-server",
+  "author": "Adrian Carriger <hello@adriancarriger.com> (http://adriancarriger.com)",
   "scripts": {
     "start": "nodemon --config config/nodemon.json",
     "dev": "node src/index.js",
